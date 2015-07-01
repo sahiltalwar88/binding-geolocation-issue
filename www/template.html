@@ -1,0 +1,12 @@
+<ion-view title="test">
+    <ion-content>
+        <div>
+            <ion-scroll zooming="true" direction="xy" style="width:90%">
+				<span>{{currentLat}}</span>
+				<span>{{currentLong}}</span>
+                <div id="map" zoom="16" bgeo lat="{{currentLat}}" lng="{{currentLong}}">
+                </div>
+            </ion-scroll>
+        </div>
+    </ion-content>
+</ion-view>
