@@ -3,6 +3,7 @@ angular.module('test.controllers', ['ionic', 'ngCordova.plugins.geolocation',
     'ngCordova.plugins.backgroundGeolocation'])
 	
 .controller('MapCtrl', ['$scope', '$ionicPopup', '$cordovaGeolocation', '$cordovaBackgroundGeolocation', '$timeout', '$http', function ($scope, $ionicPopup, $cordovaGeolocation, $cordovaBackgroundGeolocation, $timeout, $http) {
+	$scope.loaded = false;
 	var options = {
 		// https://github.com/christocracy/cordova-plugin-background-geolocation#config
     };
@@ -12,7 +13,8 @@ angular.module('test.controllers', ['ionic', 'ngCordova.plugins.geolocation',
 		.then(function (location) {
 			$scope.currentLat = location.coords.latitude;
 			$scope.currentLong = location.coords.longitude;
-			console.log($scope.currentLat, $scope.currentLong);
+			$scope.loaded = true;
+			//console.log($scope.currentLat, $scope.currentLong);
 		});
 		
 	  document.addEventListener("deviceready", function () {
@@ -32,8 +34,8 @@ angular.module('test.controllers', ['ionic', 'ngCordova.plugins.geolocation',
 .directive('bgeo', ['$cordovaGeolocation', '$cordovaBackgroundGeolocation', '$http', function ($cordovaGeolocation, $cordovaBackgroundGeolocation, $http) {
     return {
 		scope: {
-           lat: '@',
-           lng: '@'
+           lat: '=',
+           lng: '='
        },
         link: function (scope) {
 			console.log("directive: ", scope.lat, scope.lng);
