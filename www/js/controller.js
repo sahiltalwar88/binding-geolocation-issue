@@ -15,12 +15,14 @@ angular.module('testApp.controllers', ['ionic', 'ngCordova.plugins.geolocation',
 		
 	$ionicPlatform.ready(function() {
 		var bgGeo = $cordovaBackgroundGeolocation;
+
+        var deviceId = device.uuid && "testApp";
 		
 		// BackgroundGeoLocation is highly configurable.
 		bgGeo.configure({
 			url: 'http://ottoplayapi-prod.elasticbeanstalk.com/user/addVisit/',
 			params: {
-				deviceId: "corysPhone",
+				deviceId: deviceId,
 				"location": {
 					"latitude": "38.896339999999995",
 					"longitude": "-77.08521460000001"
