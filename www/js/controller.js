@@ -17,18 +17,33 @@ angular.module('test.controllers', ['ionic', 'ngCordova.plugins.geolocation',
 			//console.log($scope.currentLat, $scope.currentLong);
 		});
 		
-	  document.addEventListener("deviceready", function () {
-		// `configure` calls `start` internally
-		$cordovaBackgroundGeolocation.configure(options)
-		.then(
-		  null, // Background never resolves
-		  function (err) { // error callback
-			console.error(err);
-		  },
-		  function (location) { // notify callback
-			console.log(location);
-		  });
-		});
+		document.addEventListener("deviceready", onDeviceReady, false);
+		
+		function onDeviceReady() {
+			var bgGeo = $cordovaBackgroundGeolocation;
+			
+			// BackgroundGeoLocation is highly configurable.
+			bgGeo.configure({
+				url: 'http://ottoplayapi-prod.elasticbeanstalk.com/user/addVisit/',
+				params: {
+					deviceId: "0502fd09-09e7-4756-97fa-7a0106d3fd45",
+					"location": {
+						"latitude": "38.896339999999995",
+						"longitude": "-77.08521460000001"
+					}
+				},
+				desiredAccuracy: 10,
+				stationaryRadius: 20,
+				distanceFilter: 30,
+				notificationTitle: 'TestTitle', // <-- android only, customize the title of the notification
+				notificationText: 'TestText', // <-- android only, customize the text of the notification
+				activityType: 'OtherNavigation',
+				debug: true, // <-- enable this hear sounds for background-geolocation life-cycle.
+				stopOnTerminate: false // <-- enable this to clear background location settings when the app terminates
+			});
+
+			bgGeo.start(); // Sahil: Do we need this?? Configure calls start internally.
+		};
 }])
 
 .directive('bgeo', ['$cordovaGeolocation', '$cordovaBackgroundGeolocation', '$http', function ($cordovaGeolocation, $cordovaBackgroundGeolocation, $http) {
@@ -57,29 +72,21 @@ angular.module('test.controllers', ['ionic', 'ngCordova.plugins.geolocation',
 
 
 // ALTERNATIVE DECLARATION OF BACKGROUND GEO
-		// $scope.stopBackgroundGeolocation = function () {
-		  // $cordovaBackgroundGeolocation.stop();
-		// };
-	  // }, false);
-		// document.addEventListener("deviceready", onDeviceReady, false);
-		
-		// function onDeviceReady() {
-			// var bgGeo = $cordovaBackgroundGeolocation;
-			
-			// // BackgroundGeoLocation is highly configurable.
-			// bgGeo.configure({
-				// url: 'http://my_url_goes_here/', // + deviceId + '/' + lat + '/' + lng,
-				// params: {
-					// aParam: "aParam"
-				// },
-				// desiredAccuracy: 10,
-				// stationaryRadius: 20,
-				// distanceFilter: 30,
-				// notificationTitle: 'TestTitle', // <-- android only, customize the title of the notification
-				// notificationText: 'TestText', // <-- android only, customize the text of the notification
-				// activityType: 'OtherNavigation',
-				// debug: true, // <-- enable this hear sounds for background-geolocation life-cycle.
-				// stopOnTerminate: false // <-- enable this to clear background location settings when the app terminates
-			// });
+  // document.addEventListener("deviceready", function () {
 
-			//bgGeo.start(); // Sahil: Do we need this?? Configure calls start internally.
+    // // `configure` calls `start` internally
+    // $cordovaBackgroundGeolocation.configure(options)
+    // .then(
+      // null, // Background never resolves
+      // function (err) { // error callback
+        // console.error(err);
+      // },
+      // function (location) { // notify callback
+        // console.log(location);
+      // });
+
+    // $scope.stopBackgroundGeolocation = function () {
+      // $cordovaBackgroundGeolocation.stop();
+    // };
+
+  // }, false);

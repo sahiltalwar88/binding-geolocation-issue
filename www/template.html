@@ -1,11 +1,5 @@
-<ion-view title="test">
-    <ion-content>
-        <div>
-            <ion-scroll zooming="true" direction="xy" style="width:90%">
-				<span>{{currentLat}}</span>
-				<span>{{currentLong}}</span>
-                <div id="map" bgeo ng-if=loaded lat=currentLat lng=currentLong></div>
-            </ion-scroll>
-        </div>
-    </ion-content>
-</ion-view>
+<ion-scroll zooming="true" direction="xy" style="width:90%">
+   <div ng-if="loaded" bgeo lat="currentLat" lng="currentLong">
+	   <div id="map" style="width: 600px; height: 500px;"></div>
+   </div>
+</ion-scroll>
