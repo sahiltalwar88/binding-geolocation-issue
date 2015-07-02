@@ -1,8 +1,8 @@
 // Define the angular module
 angular.module('testApp.controllers', ['ionic', 'ngCordova.plugins.geolocation', 'ngCordova.plugins.backgroundGeolocation'])
 	
-.controller('MapCtrl', ['$scope', '$ionicPopup', '$cordovaGeolocation', '$cordovaBackgroundGeolocation', '$timeout', '$http', 
-	           function ($scope, $ionicPopup, $cordovaGeolocation, $cordovaBackgroundGeolocation, $timeout, $http) {
+.controller('MapCtrl', ['$scope', '$ionicPopup', '$cordovaGeolocation', '$cordovaBackgroundGeolocation', '$timeout', '$http', '$ionicPlatform', 
+	           function ($scope, $ionicPopup, $cordovaGeolocation, $cordovaBackgroundGeolocation, $timeout, $http, $ionicPlatform) {
 	$scope.loaded = false;
 
 	var posOptions = { timeout: 5000, enableHighAccuracy: true, maximumAge: 5000 };
@@ -11,19 +11,16 @@ angular.module('testApp.controllers', ['ionic', 'ngCordova.plugins.geolocation',
 			$scope.currentLat = location.coords.latitude;
 			$scope.currentLong = location.coords.longitude;
 			$scope.loaded = true;
-			//console.log($scope.currentLat, $scope.currentLong);
 		});
 		
-	document.addEventListener("deviceready", onDeviceReady, false);
-	
-	function onDeviceReady() {
+	$ionicPlatform.ready(function() {
 		var bgGeo = $cordovaBackgroundGeolocation;
 		
 		// BackgroundGeoLocation is highly configurable.
 		bgGeo.configure({
 			url: 'http://ottoplayapi-prod.elasticbeanstalk.com/user/addVisit/',
 			params: {
-				deviceId: "testApp",
+				deviceId: "corysPhone",
 				"location": {
 					"latitude": "38.896339999999995",
 					"longitude": "-77.08521460000001"
@@ -39,8 +36,8 @@ angular.module('testApp.controllers', ['ionic', 'ngCordova.plugins.geolocation',
 			stopOnTerminate: false // <-- enable this to clear background location settings when the app terminates
 		});
 
-		bgGeo.start(); // Sahil: Do we need this?? Configure calls start internally.
-	};
+		bgGeo.start();
+	});
 }])
 
 .directive('bgeo', ['$cordovaGeolocation', '$cordovaBackgroundGeolocation', '$http', 
